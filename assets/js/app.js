@@ -68,7 +68,7 @@ d3.csv(censusData).then(function(data) {
         .attr("class", "stateCircle")
         .attr("cx", d => xScale(d.age))
         .attr("cy", d => yScale(d.smokes))
-        .attr("r", 20)
+        .attr("r", 15)
         .attr("opacity", 0.75);
     
     // Add State Abbreviations to the circles
@@ -83,32 +83,6 @@ d3.csv(censusData).then(function(data) {
         // Text was misaligned, this fixed the issue
         .attr("dy", 4)
         .text(d => d.abbr);
-
-    // Append a div object to create tooltips and assign it to the d3-tip class
-    var toolTip = d3.select("body").append("div")
-        .attr("class", "d3-tip");
-
-    // MouseOver - Show tooltip with info
-    circlesGroup.on("mouseover", function(d) {
-        circlesGroup.classed("active");
-        toolTip.style("display", "block")
-            .html(`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
-            .style("left", d3.event.pageX + "px")
-            .style("top", d3.event.pageY + "py");
-    });
-
-    // Keeps the tooltip even when over text
-    stateText.on("mouseover", function(d) {
-        toolTip.style("display", "block")
-            .html(`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
-            .style("left", d3.event.pageX + "px")
-            .style("top", d3.event.pageY + "py");
-    });
-    
-    // MouseOut - Make tooltip invisible
-    circlesGroup.on("mouseout", function(){
-       toolTip.style("display", "none");
-   });
     
     // Label both of the Axis
     chartGroup.append("text")
@@ -125,7 +99,34 @@ d3.csv(censusData).then(function(data) {
         .attr("class", "aText")
         .attr("class", "active")
         .text("Age (Median)");
+
+    // Initialize tooltip
+    var toolTip = d3.tip()
+        .attr("class", "d3-tip")
+        .html(function(d) {
+            return (`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
+        })
+
+    // Create the tooltip in chartGroup
+    chartGroup.call(toolTip);
+    
+    // Mouseover event for circle objects
+    circlesGroup.on("mouseover", function(d) {
+        toolTip.show(d, this);
+    })
+    // Mouseout event for circle objects
+    .on("mouseout", function(d) {
+        toolTip.hide(d);
+    });
+
+    // Had to add handlers for text as the previous mouseout event triggers on going on text
+    // Mouseover event for text
+    stateText.on("mouseover", function(d) {
+        toolTip.show(d, this);
+    })
+    // Mouseout event for text
+    .on("mouseout", function(d) {
+        toolTip.hide(d);
+    });
+
 });
-
-
-// Optional Assignment: Look at final class assignment
