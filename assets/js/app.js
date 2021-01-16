@@ -41,8 +41,13 @@ var censusData = "/assets/data/data.csv"
 // read in csv data
 d3.csv(censusData).then(function(data) {
 
+    // Declare the data as a numeral
     data.forEach(function(dataset) {
-        console.log(dataset);  
+        console.log(dataset);
+        dataset.smokes = +dataset.smokes;
+        dataset.age = +dataset.age;
+        console.log(dataset.smokes);
+        console.log(dataset.age);
     });
 
 });
