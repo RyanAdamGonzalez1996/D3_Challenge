@@ -82,7 +82,6 @@ d3.csv(censusData).then(function(data) {
         .attr("cx", d => xScale(d.age))
         .attr("cy", d => yScale(d.smokes))
         .attr("r", 15)
-        
         .attr("opacity", 0.75);
     
     // Add State Abbreviations to the circles
@@ -96,7 +95,24 @@ d3.csv(censusData).then(function(data) {
         .text(d => d.abbr);
 
     // maybe (mouseover event to increase size of dot)
+    // Append a div object to create tooltips and assign it to the d3-tip class
+    var toolTip = d3.select("body").append("div")
+        .attr("class", "d3-tip");
+
+    //chartGroup.call(toolTip);
+
     // MouseOver - Show tooltip with info
+    circlesGroup.on("mouseover", function(d) {
+        toolTip.style("display", "block");
+        toolTip.html(`State: ${d.state}<br>Age: ${d.age}<br>Smokes: ${d.smokes}`)
+            .style("left", d3.event.pageX + "px")
+            .style("top", d3.event.pageY + "py");
+    });
+
+    // MouseOut - Make tooltip invisible
+    circlesGroup.on("mouseout", function(){
+        toolTip.style("display", "none");
+    });
 
 });
 
