@@ -12,7 +12,7 @@
 // Figure out how to run this with  
 // `python -m http.server` //
 // SVG  Dimensions
-var svgWidth = 1000;
+var svgWidth = 960;
 var svgHeight = 500;
 
 var margin = {
@@ -57,8 +57,10 @@ d3.csv(censusData).then(function(data) {
 
     // Create Scale for Y Coordinate
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.smokes)])
-        .range([0, svgHeight]);
+        //.domain([d3.max(data, d => d.smokes), d3.min(data, d => d.smokes)])
+        //.domain([d3.max(data, d => d.smokes), d3.min(data, d => d.smokes)])
+        .domain(d3.extent(data, d => d.smokes))
+        .range([svgHeight, 0]);
 
     // Create Axis Functions
     var xAxis = d3.axisBottom(xScale);
