@@ -1,13 +1,3 @@
-// @TODO: YOUR CODE HERE!
-
-// Data Columns
-//id, state, abbr(state), poverty
-//povertyMoe, age, ageMoe, income
-//incomeMoe, healthcare, healthcareLow
-//healthcareHigh, obesity, obesityLow,
-//obesityHigh, smokes, smokesLow, smokesHigh
-// -0.385218228
-
 // SVG  Dimensions
 var svgWidth = 960;
 var svgHeight = 500;
@@ -51,14 +41,11 @@ d3.csv(censusData).then(function(data) {
     // Create Scale for X Coordinate
     var xScale = d3.scaleLinear()
         .domain([d3.min(data, d => d.age) - 2, d3.max(data, d => d.age) + 2])
-        //.domain(d3.extent(data, d => d.age))
         .range([0, plotWidth]);
 
     // Create Scale for Y Coordinate
     var yScale = d3.scaleLinear()
         .domain([d3.min(data, d => d.smokes) - 2, d3.max(data, d => d.smokes) + 2])
-        //.domain([d3.max(data, d => d.smokes), 0])
-        //.domain(d3.extent(data, d => d.smokes))
         .range([plotHeight, 0]);
 
     // Create Axis Functions
@@ -81,7 +68,7 @@ d3.csv(censusData).then(function(data) {
         .attr("class", "stateCircle")
         .attr("cx", d => xScale(d.age))
         .attr("cy", d => yScale(d.smokes))
-        .attr("r", 15)
+        .attr("r", 20)
         .attr("opacity", 0.75);
     
     // Add State Abbreviations to the circles
@@ -92,26 +79,36 @@ d3.csv(censusData).then(function(data) {
         .attr("class", "stateText")
         .attr("x", d => xScale(d.age))
         .attr("y", d => yScale(d.smokes))
+        .attr("font-size", 10)
+        // Text was misaligned, this fixed the issue
+        .attr("dy", 4)
         .text(d => d.abbr);
 
-    
     // Append a div object to create tooltips and assign it to the d3-tip class
     var toolTip = d3.select("body").append("div")
         .attr("class", "d3-tip");
 
-
     // MouseOver - Show tooltip with info
     circlesGroup.on("mouseover", function(d) {
-        toolTip.style("display", "block");
-        toolTip.html(`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
+        circlesGroup.classed("active");
+        toolTip.style("display", "block")
+            .html(`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
             .style("left", d3.event.pageX + "px")
             .style("top", d3.event.pageY + "py");
     });
 
+    // Keeps the tooltip even when over text
+    stateText.on("mouseover", function(d) {
+        toolTip.style("display", "block")
+            .html(`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
+            .style("left", d3.event.pageX + "px")
+            .style("top", d3.event.pageY + "py");
+    });
+    
     // MouseOut - Make tooltip invisible
     circlesGroup.on("mouseout", function(){
-        toolTip.style("display", "none");
-    });
+       toolTip.style("display", "none");
+   });
     
     // Label both of the Axis
     chartGroup.append("text")
@@ -132,4 +129,3 @@ d3.csv(censusData).then(function(data) {
 
 
 // Optional Assignment: Look at final class assignment
-
