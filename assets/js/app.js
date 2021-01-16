@@ -78,11 +78,11 @@ d3.csv(censusData).then(function(data) {
         .data(data)
         .enter()
         .append("circle")
-        .attr("class", "dataCircle")
+        .attr("class", "stateCircle")
         .attr("cx", d => xScale(d.age))
         .attr("cy", d => yScale(d.smokes))
         .attr("r", 15)
-        .style("fill", "red")
+        
         .attr("opacity", 0.75);
     
     // Add State Abbreviations to the circles
@@ -93,11 +93,11 @@ d3.csv(censusData).then(function(data) {
         .attr("class", "stateText")
         .attr("x", d => xScale(d.age))
         .attr("y", d => yScale(d.smokes))
-        .attr("font-size", 10)
         .text(d => d.abbr);
 
     // maybe (mouseover event to increase size of dot)
-    // Mous
+    // MouseOver - Show tooltip with info
+
 });
 
 
