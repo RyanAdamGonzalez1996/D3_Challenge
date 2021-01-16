@@ -9,11 +9,43 @@
 // -0.385218228
 
 
-// Figure out how to run this with 
-// `python -m http.server`
+// Figure out how to run this with  
+// `python -m http.server` //
+// SVG  Dimensions
+var svgWidth = 1000;
+var svgHeight = 500;
 
+var margin = {
+    top: 30,
+    right: 40,
+    bottom: 60,
+    left: 100
+};
+
+// Plot Dimensions
+var plotWidth = svgWidth - margin.left - margin.right;
+var plotHeight = svgHeight - margin.top - margin.bottom;
+
+// Create SVG wrapper 
+var svg = d3.select("#scatter")
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+// Append svg group that contains our chart
+var chartGroup = svg.append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.right})`);
+
+// CSV file path
+var censusData = "/assets/data/data.csv"
 // read in csv data
+d3.csv(censusData).then(function(data) {
 
+    data.forEach(function(dataset) {
+        console.log(dataset);  
+    });
+
+});
 // Assign variables to data values
 
 // Create the object for the space needed for the plot
