@@ -16,7 +16,7 @@ var svgWidth = 960;
 var svgHeight = 500;
 
 var margin = {
-    top: 30,
+    top: 20,
     right: 40,
     bottom: 60,
     left: 100
@@ -52,15 +52,16 @@ d3.csv(censusData).then(function(data) {
 
     // Create Scale for X Coordinate
     var xScale = d3.scaleLinear()
-        .domain(d3.extent(data, d => d.age))
-        .range([0, svgWidth]);
+        .domain([d3.min(data, d => d.age) - 2, d3.max(data, d => d.age) + 2])
+        //.domain(d3.extent(data, d => d.age))
+        .range([0, plotWidth]);
 
     // Create Scale for Y Coordinate
     var yScale = d3.scaleLinear()
-        //.domain([d3.max(data, d => d.smokes), d3.min(data, d => d.smokes)])
-        //.domain([d3.max(data, d => d.smokes), d3.min(data, d => d.smokes)])
-        .domain(d3.extent(data, d => d.smokes))
-        .range([svgHeight, 0]);
+        .domain([d3.min(data, d => d.smokes) - 2, d3.max(data, d => d.smokes) + 2])
+        //.domain([d3.max(data, d => d.smokes), 0])
+        //.domain(d3.extent(data, d => d.smokes))
+        .range([plotHeight, 0]);
 
     // Create Axis Functions
     var xAxis = d3.axisBottom(xScale);
