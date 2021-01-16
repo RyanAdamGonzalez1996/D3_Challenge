@@ -8,9 +8,6 @@
 //obesityHigh, smokes, smokesLow, smokesHigh
 // -0.385218228
 
-
-// Figure out how to run this with  
-// `python -m http.server` //
 // SVG  Dimensions
 var svgWidth = 960;
 var svgHeight = 500;
@@ -38,6 +35,7 @@ var chartGroup = svg.append("g")
 
 // CSV file path
 var censusData = "/assets/data/data.csv"
+
 // read in csv data
 d3.csv(censusData).then(function(data) {
 
@@ -84,14 +82,24 @@ d3.csv(censusData).then(function(data) {
         .attr("cx", d => xScale(d.age))
         .attr("cy", d => yScale(d.smokes))
         .attr("r", 15)
+        .style("fill", "red")
         .attr("opacity", 0.75);
+    
+    // Add State Abbreviations to the circles
+    var stateText = chartGroup.selectAll("label")
+        .data(data)
+        .enter()
+        .append("text")
+        .attr("class", "stateText")
+        .attr("x", d => xScale(d.age))
+        .attr("y", d => yScale(d.smokes))
+        .attr("font-size", 10)
+        .text(d => d.abbr);
+
+    // maybe (mouseover event to increase size of dot)
+    // Mous
 });
-// Create the plot
-// Situate axes and labels to the left and bottom of chart
 
-// Populate the plot (with state abbreviations in circle)
-
-// maybe (mouseover event to increase size of dot)
 
 // Optional Assignment: Look at final class assignment
 
