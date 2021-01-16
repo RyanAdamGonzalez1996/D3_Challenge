@@ -73,6 +73,17 @@ d3.csv(censusData).then(function(data) {
     
     chartGroup.append("g")
         .call(yAxis);
+
+    // Add the data points to the chart
+    var circlesGroup = chartGroup.selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "dataCircle")
+        .attr("cx", d => xScale(d.age))
+        .attr("cy", d => yScale(d.smokes))
+        .attr("r", 15)
+        .attr("opacity", 0.75);
 });
 // Create the plot
 // Situate axes and labels to the left and bottom of chart
