@@ -15,7 +15,7 @@ var svgHeight = 500;
 var margin = {
     top: 20,
     right: 40,
-    bottom: 60,
+    bottom: 80,
     left: 100
 };
 
@@ -94,17 +94,16 @@ d3.csv(censusData).then(function(data) {
         .attr("y", d => yScale(d.smokes))
         .text(d => d.abbr);
 
-    // maybe (mouseover event to increase size of dot)
+    
     // Append a div object to create tooltips and assign it to the d3-tip class
     var toolTip = d3.select("body").append("div")
         .attr("class", "d3-tip");
 
-    //chartGroup.call(toolTip);
 
     // MouseOver - Show tooltip with info
     circlesGroup.on("mouseover", function(d) {
         toolTip.style("display", "block");
-        toolTip.html(`State: ${d.state}<br>Age: ${d.age}<br>Smokes: ${d.smokes}`)
+        toolTip.html(`State: ${d.state}<br>Age (Median): ${d.age}<br>Percentage of Smokers: ${d.smokes}%`)
             .style("left", d3.event.pageX + "px")
             .style("top", d3.event.pageY + "py");
     });
@@ -113,7 +112,22 @@ d3.csv(censusData).then(function(data) {
     circlesGroup.on("mouseout", function(){
         toolTip.style("display", "none");
     });
+    
+    // Label both of the Axis
+    chartGroup.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left + 40)
+        .attr("x", 0 - (plotHeight / 2))
+        .attr("dy", "1em")
+        .attr("class", "aText")
+        .attr("class", "active")
+        .text("Percentage of Smokers(%)");
 
+    chartGroup.append("text")
+        .attr("transform", `translate(${plotWidth / 2}, ${plotHeight + margin.top + 30})`)
+        .attr("class", "aText")
+        .attr("class", "active")
+        .text("Age (Median)");
 });
 
 
