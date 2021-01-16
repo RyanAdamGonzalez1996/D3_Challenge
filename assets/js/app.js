@@ -50,11 +50,28 @@ d3.csv(censusData).then(function(data) {
         console.log(dataset.age);
     });
 
+    // Create Scale for X Coordinate
+    var xScale = d3.scaleLinear()
+        .domain(d3.extent(data, d => d.age))
+        .range([0, svgWidth]);
+
+    // Create Scale for Y Coordinate
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.smokes)])
+        .range([0, svgHeight]);
+
+    // Create Axis Functions
+    var xAxis = d3.axisBottom(xScale);
+    var yAxis = d3.axisLeft(yScale);
+
+    // Append Axis to the chart
+    chartGroup.append("g")
+        .attr("transform", `translate(0, ${plotHeight})`)
+        .call(xAxis);
+    
+    chartGroup.append("g")
+        .call(yAxis);
 });
-// Assign variables to data values
-
-// Create the object for the space needed for the plot
-
 // Create the plot
 // Situate axes and labels to the left and bottom of chart
 
